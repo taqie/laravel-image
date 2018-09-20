@@ -2,7 +2,7 @@
     "name": "taqie/laravel-image",
     "type": "library",
     "require": {
-        "laravel/laravel": "^5.7",
+        "laravel/framework": "5.7.*",
         "intervention/image": "^2.4"
     },
     "license": "MIT",
