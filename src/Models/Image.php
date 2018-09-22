@@ -7,14 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as ImageTransform;
 class Image extends Model
 {
-    const TYPES = [
-        'resize',
-        'fit'
-    ];
     protected $fillable = [
         'imagetable_id',
         'imagetable_type',
-        'disc',
+        'disk',
         'path',
         'name'
     ];
@@ -28,12 +24,28 @@ class Image extends Model
         return Storage::disk($this->getAttribute('disc'))->path($this->getAttribute('path').$this->getAttribute('name'));
     }
 
-    public function thumbResize(?int $width, ?int $height) : string
+    public function thumbResize(?int $width, ?int $height, $ext = 'jpg') : string
     {
+        $storage = Storage::disk($this->disk);
+        $directory = 'thumbs/';
+        $fileName = $width.'_'.$height.'_'.$this->id.'.'.$ext;
+        $thumbPath = $directory.$fileName;
+        $storagePathThumb = Storage::disk('public')->path($directory);
+
+        if($storage->exists($thumbPath))
+        {
+            return $thumbPath;
+        }
+
         $image = ImageTransform::make($this->getAttribute('full_path'));
         $image->resize($width,$height, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
+        $image->encode($ext);
+        $image->save($storagePathThumb.$fileName);
+
+        return $thumbPath;
+
     }
 }

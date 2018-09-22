@@ -14,6 +14,9 @@ class ImageServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
+        $this->publishes([
+            __DIR__.'/Configs/laravel_image.php' => config_path('laravel_image.php'),
+        ]);
     }
 
     /**
@@ -23,5 +26,8 @@ class ImageServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__.'Configs/laravel_image.php', 'laravel_image'
+        );
     }
 }

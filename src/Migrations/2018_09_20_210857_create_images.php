@@ -17,7 +17,7 @@ class CreateImages extends Migration
             $table->increments('id');
             $table->string('imagetable_id');
             $table->string('imagetable_type');
-            $table->string('disc');
+            $table->string('disk');
             $table->string('path')->default("");
             $table->string('name');
             $table->timestamps();
