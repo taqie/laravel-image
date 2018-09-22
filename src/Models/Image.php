@@ -21,7 +21,7 @@ class Image extends Model
 
     public function getFullPathAttribute()
     {
-        return Storage::disk($this->getAttribute('disc'))->path($this->getAttribute('path').$this->getAttribute('name'));
+        return Storage::disk($this->getAttribute('disk'))->path($this->getAttribute('path').$this->getAttribute('name'));
     }
 
     public function thumbResize(?int $width, ?int $height, $ext = 'jpg') : string
@@ -30,7 +30,12 @@ class Image extends Model
         $directory = 'thumbs/';
         $fileName = $width.'_'.$height.'_'.$this->id.'.'.$ext;
         $thumbPath = $directory.$fileName;
-        $storagePathThumb = Storage::disk('public')->path($directory);
+        $storagePathThumb = $storage->path($directory);
+
+        if(!file_exists($storagePathThumb))
+        {
+            mkdir($storagePathThumb);
+        }
 
         if($storage->exists($thumbPath))
         {
