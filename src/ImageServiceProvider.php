@@ -27,7 +27,7 @@ class ImageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'Configs/laravel_image.php', 'laravel_image'
+            __DIR__.'/Configs/laravel_image.php', 'laravel_image'
         );
     }
 }
